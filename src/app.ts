@@ -8,7 +8,7 @@ export const request: RequestConfig = {
     adaptor: resData => {
       return {
         ...resData,
-        success: resData.status === 0,
+        success: resData?.status === 0,
         errorMessage: resData.message,
       };
     },

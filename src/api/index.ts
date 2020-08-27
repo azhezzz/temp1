@@ -16,4 +16,6 @@ export const API = {
     request('http://webesports.fishiny.com/api/simple/verify', {
       params: { token },
     }),
+
+  getlist: () => request('/api/device'),
 };
