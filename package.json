@@ -37,6 +37,5 @@
     "yorkie": "^2.0.0"
   },
   "devDependencies": {
-    "@umijs/preset-ui": "^2.2.7"
   }
 }

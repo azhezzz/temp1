@@ -1,11 +1,14 @@
+import React from 'react';
+import { useModel, useDispatch } from 'umi';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './styles.less';
-import React from 'react';
 
 export default () => {
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const { refresh } = useModel('@@initialState');
+  const dispatch = useDispatch();
+  const onFinish = (values: any): void => {
+    dispatch({ type: `user/login`, payload: { values, refresh } });
   };
 
   return (
@@ -28,31 +31,21 @@ export default () => {
       >
         <Form.Item
           name="username"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your Username!',
-            },
-          ]}
+          rules={[{ required: true, message: '请输入用户名!' }]}
         >
           <Input
             prefix={<UserOutlined className={styles['site-form-item-icon']} />}
-            placeholder="Username"
+            placeholder="用户名"
           />
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your Password!',
-            },
-          ]}
+          rules={[{ required: true, message: '请输入密码' }]}
         >
           <Input
             prefix={<LockOutlined className={styles['site-form-item-icon']} />}
             type="password"
-            placeholder="Password"
+            placeholder="密码"
           />
         </Form.Item>
         <Form.Item>

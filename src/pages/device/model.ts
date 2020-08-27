@@ -8,7 +8,7 @@ export interface DeviceModelState {
   type: DeviceInfoType;
 }
 export interface DeviceModelType {
-  namespace: 'device';
+  namespace: string;
   state: DeviceModelState;
   effects: {
     query: Effect;
