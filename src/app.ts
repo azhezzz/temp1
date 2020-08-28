@@ -1,6 +1,9 @@
 import { API } from '@/api';
 import { RequestConfig } from 'umi';
 import rightRender from '@/components/rightRender';
+import React from 'react';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
 
 export const request: RequestConfig = {
   timeout: 15 * 1000,
@@ -31,12 +34,9 @@ export async function getInitialState() {
 }
 
 export const layout = {
-  logout: () => {
-    console.log('???');
-  }, // do something
-  rightRender: rightRender, // return string || ReactNode;
-  ErrorComponent: (error: any) => {
-    console.log(error);
-    return null;
-  },
+  rightRender: rightRender,
 };
+
+export function rootContainer(container: React.ReactNode) {
+  return React.createElement(ConfigProvider, { locale: zhCN }, container);
+}

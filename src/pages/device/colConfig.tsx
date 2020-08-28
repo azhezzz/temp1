@@ -15,9 +15,25 @@ export const colConfigs: {
 export const buildColConfigs = (
   type: DeviceInfoType,
   openChangeIdModal: (id: string) => () => void,
+  openDetailInfoModal: (id: string) => () => void,
+  openUpdateFirmwareModal: (id: string) => () => void,
 ) => {
   if (type === DeviceInfoType.PANEL) {
     return colConfigs[type].concat([
+      {
+        title: 'Detail',
+        key: 'action',
+        render: (text, record) => (
+          <Space size="middle" style={{ color: 'blue' }}>
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={openDetailInfoModal(record.name)}
+            >
+              详情 {record.name}
+            </span>
+          </Space>
+        ),
+      },
       {
         title: 'Action',
         key: 'action',
@@ -27,9 +43,14 @@ export const buildColConfigs = (
               style={{ cursor: 'pointer' }}
               onClick={openChangeIdModal(record.name)}
             >
-              change {record.name}
+              更新ID {record.name}
             </span>
-            <span>Delete</span>
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={openUpdateFirmwareModal(record.name)}
+            >
+              更新固件
+            </span>
           </Space>
         ),
       },
