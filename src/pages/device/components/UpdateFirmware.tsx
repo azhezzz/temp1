@@ -6,7 +6,7 @@ interface IProps {
   visible: boolean;
   onCancel: () => void;
 }
-
+// TODO: 待开发
 export const UpdateFirmware = ({ visible, onCancel }: IProps) => {
   return (
     <Modal title="更新固件" visible={visible} onCancel={onCancel} footer={null}>

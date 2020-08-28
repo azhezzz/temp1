@@ -1,21 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector, DeviceModelState, Loading } from 'umi';
 import { Table } from 'antd';
+import { ColumnProps } from 'antd/lib/table';
 import { buildColConfigs } from './colConfig';
 
 import { ChangeIdModal } from './components/ChangeIdModal';
 import { DetailInfoModal } from './components/DetailInfoModal';
 import { UpdateFirmware } from './components/UpdateFirmware';
+import { ErrorBoundary } from '@/components/ErrorBoundaries';
 
 export default () => {
   const dispatch = useDispatch();
+  // 模态框
   const [changeIdModalVisible, setChangeIdModalVisible] = useState(false);
   const [detailInfoModalVisible, setDetailInfoModalVisible] = useState(false);
   const [updateFirmwareModalVisible, setUpdateFirmwareModalVisible] = useState(
     false,
   );
-
+  // 修改id
   const [id, setId] = useState('');
+  // 详细信息
+  const [details, setDetails] = useState<{
+    record: any;
+    config: ColumnProps<any>[];
+  }>({
+    record: {},
+    config: [],
+  });
+  // 列表数据
   const { dataSource, type, changeIdLoading } = useSelector(
     ({ device, loading }: { device: DeviceModelState; loading: Loading }) => ({
       dataSource: device.dataSrouce[device.type],
@@ -32,16 +44,21 @@ export default () => {
     setId(id);
     setChangeIdModalVisible(true);
   };
-  const closeChangeIdModal = () => {
+  const closeChangeIdModal = useCallback(() => {
     setChangeIdModalVisible(false);
-  };
+  }, []);
 
-  const openDetailInfoModal = (id: string) => () => {
+  const openDetailInfoModal = (
+    record: any,
+    config: ColumnProps<any>[],
+  ) => () => {
+    setDetails({ record, config });
     setDetailInfoModalVisible(true);
   };
-  const closeDetailInfoModal = () => {
+
+  const closeDetailInfoModal = useCallback(() => {
     setDetailInfoModalVisible(false);
-  };
+  }, []);
 
   const openUpdateFirmwareModal = (id: string) => () => {
     setUpdateFirmwareModalVisible(true);
@@ -51,31 +68,38 @@ export default () => {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <Table
-        dataSource={dataSource}
-        columns={buildColConfigs(
-          type,
-          openChangeIdModal,
-          openDetailInfoModal,
-          openUpdateFirmwareModal,
-        )}
-        rowKey="key"
-      />
-      <ChangeIdModal
-        visible={changeIdModalVisible}
-        onCancel={closeChangeIdModal}
-        loading={changeIdLoading}
-        id={id}
-      />
-      <DetailInfoModal
-        visible={detailInfoModalVisible}
-        onCancel={closeDetailInfoModal}
-      />
-      <UpdateFirmware
-        visible={updateFirmwareModalVisible}
-        onCancel={closeUpdateFirmwareModal}
-      />
-    </div>
+    <ErrorBoundary>
+      <div style={{ padding: 20 }}>
+        <ErrorBoundary>
+          <Table
+            dataSource={dataSource}
+            columns={buildColConfigs(
+              type,
+              openChangeIdModal,
+              openDetailInfoModal,
+              openUpdateFirmwareModal,
+            )}
+            rowKey="id"
+          />
+        </ErrorBoundary>
+        <ChangeIdModal
+          visible={changeIdModalVisible}
+          onCancel={closeChangeIdModal}
+          loading={changeIdLoading}
+          id={id}
+        />
+        <DetailInfoModal
+          details={details}
+          visible={detailInfoModalVisible}
+          onCancel={closeDetailInfoModal}
+        />
+        <UpdateFirmware
+          visible={updateFirmwareModalVisible}
+          onCancel={closeUpdateFirmwareModal}
+        />
+      </div>
+    </ErrorBoundary>
   );
 };
+
+const a = () => 1;

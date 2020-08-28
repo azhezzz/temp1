@@ -16,6 +16,7 @@ export interface DeviceModelType {
   state: DeviceModelState;
   effects: {
     getList: Effect;
+    changeId: Effect;
   };
   reducers: {
     setType: ImmerReducer<DeviceModelState>;
@@ -29,7 +30,7 @@ const DeviceModel: DeviceModelType = {
     name: '',
     type: DeviceInfoType.PANEL,
     dataSrouce: {
-      [DeviceInfoType.DOOR]: [],
+      [DeviceInfoType.DOORSENSOR]: [],
       [DeviceInfoType.METER]: [],
       [DeviceInfoType.PANEL]: [],
       [DeviceInfoType.READER]: [],
@@ -40,8 +41,24 @@ const DeviceModel: DeviceModelType = {
       const type = yield select(
         ({ device }: { device: DeviceModelState }) => device.type,
       );
-      const res = yield call(API.getlist);
-      yield put({ type: 'setList', payload: { list: res.data, type } });
+      try {
+        const res = yield call(API.getlist, type);
+        yield put({ type: 'setList', payload: { list: res, type } });
+      } catch (error) {}
+    },
+
+    *changeId({ payload }, { call, put, select }) {
+      const type = yield select(
+        ({ device }: { device: DeviceModelState }) => device.type,
+      );
+      const { new_id, old_id, onSuccess, onFail } = payload;
+      try {
+        yield call(API.changeId, { type, data: { new_id, old_id } });
+        onSuccess?.(old_id, new_id);
+        yield put({ type: 'getList' });
+      } catch (error) {
+        onFail?.(error.message);
+      }
     },
   },
   reducers: {

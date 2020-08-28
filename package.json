@@ -25,6 +25,8 @@
     "@umijs/test": "^3.2.17",
     "antd": "^4.6.1",
     "classnames": "^2.2.6",
+    "dayjs": "^1.8.34",
+    "dot-prop": "^5.2.0",
     "lint-staged": "^10.0.7",
     "mockjs": "^1.1.0",
     "moment": "^2.22.2",

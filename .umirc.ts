@@ -1,8 +1,12 @@
 import { defineConfig } from 'umi';
 export default defineConfig({
-  dva: {
-    immer: true,
-    hmr: false,
+  dva: { immer: true, hmr: false },
+  proxy: {
+    '/api': {
+      target: 'http://127.0.0.1:8000',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
   },
   layout: {
     name: 'Test',
@@ -29,6 +33,7 @@ export default defineConfig({
     {
       path: '/NotFound',
       component: '@/pages/exception/notFound',
+      wrappers: ['@/wrappers/auth'],
     },
     {
       path: '/',
@@ -36,18 +41,22 @@ export default defineConfig({
     },
     {
       path: '/device',
-      name: 'device',
+      name: '设备信息',
       component: '@/wrappers',
       wrappers: ['@/wrappers/auth'],
       routes: [
         {
           path: '/device/panel',
-          name: 'panel',
+          name: '控制面板',
           component: '@/pages/device',
         },
-        { path: '/device/meter', name: 'meter', component: '@/pages/device' },
-        { path: '/device/reader', name: 'reader', component: '@/pages/device' },
-        { path: '/device/door', name: 'door', component: '@/pages/device' },
+        { path: '/device/meter', name: '计量器', component: '@/pages/device' },
+        { path: '/device/reader', name: '识别器', component: '@/pages/device' },
+        {
+          path: '/device/doorsensor',
+          name: '门传感器',
+          component: '@/pages/device',
+        },
         { path: '*', redirect: '/NotFound' },
       ],
     },

@@ -8,14 +8,13 @@ const delay = (duration: number) => {
 
 export const API = {
   login: (data: any) =>
-    request('http://webesports.fishiny.com/api/simple/login', {
-      method: 'post',
-      data,
-    }),
-  verify: (token: string) =>
-    request('http://webesports.fishiny.com/api/simple/verify', {
-      params: { token },
-    }),
+    request('/login', { method: 'post', data, requestType: 'form' }),
 
-  getlist: () => request('/api/device'),
+  changePassword: (data: any) =>
+    request('/user/user', { method: 'post', data }),
+
+  getlist: (type: string) => request(`/device/${type}`),
+
+  changeId: ({ type, data }: { type: string; data: any }) =>
+    request(`/device/${type}/id`, { method: 'post', data }),
 };

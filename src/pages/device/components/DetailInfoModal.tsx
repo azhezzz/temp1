@@ -1,52 +1,39 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { ColumnProps } from 'antd/lib/table';
 
 import { Modal, Descriptions, Badge } from 'antd';
 
 interface IProps {
   visible: boolean;
   onCancel: () => void;
+  details: { record: any; config: ColumnProps<any>[] };
 }
 
-export const DetailInfoModal = ({ visible, onCancel }: IProps) => {
-  return (
-    <Modal
-      title="设备详情"
-      visible={visible}
-      onCancel={onCancel}
-      footer={null}
-      width="80%"
-      centered
-    >
-      <Descriptions title="User Info" layout="vertical" bordered>
-        <Descriptions.Item label="Product">Cloud Database</Descriptions.Item>
-        <Descriptions.Item label="Billing Mode">Prepaid</Descriptions.Item>
-        <Descriptions.Item label="Automatic Renewal">YES</Descriptions.Item>
-        <Descriptions.Item label="Order time">
-          2018-04-24 18:00:00
-        </Descriptions.Item>
-        <Descriptions.Item label="Usage Time" span={2}>
-          2019-04-24 18:00:00
-        </Descriptions.Item>
-        <Descriptions.Item label="Status" span={3}>
-          <Badge status="processing" text="Running" />
-        </Descriptions.Item>
-        <Descriptions.Item label="Negotiated Amount">$80.00</Descriptions.Item>
-        <Descriptions.Item label="Discount">$20.00</Descriptions.Item>
-        <Descriptions.Item label="Official Receipts">$60.00</Descriptions.Item>
-        <Descriptions.Item label="Config Info">
-          Data disk type: MongoDB
-          <br />
-          Database version: 3.4
-          <br />
-          Package: dds.mongo.mid
-          <br />
-          Storage space: 10 GB
-          <br />
-          Replication factor: 3
-          <br />
-          Region: East China 1<br />
-        </Descriptions.Item>
-      </Descriptions>
-    </Modal>
-  );
-};
+export const DetailInfoModal = memo(
+  ({ visible, onCancel, details }: IProps) => {
+    const { record = {}, config = [] } = details;
+    return (
+      <Modal
+        title="设备详情"
+        visible={visible}
+        onCancel={onCancel}
+        footer={null}
+        width="90%"
+        centered
+      >
+        <Descriptions
+          bordered
+          column={{ xxl: 5, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+        >
+          {config.map((item, index) => (
+            <Descriptions.Item label={item.title} key={item.key}>
+              {item.render
+                ? item.render(record[item.dataIndex as string], record, index)
+                : record[item.dataIndex as string]}
+            </Descriptions.Item>
+          ))}
+        </Descriptions>
+      </Modal>
+    );
+  },
+);
