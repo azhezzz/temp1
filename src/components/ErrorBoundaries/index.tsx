@@ -17,9 +17,9 @@ const DefaultUI = () => (
       margin: 'auto',
     }}
   >
-    <h1>Something went wrong.</h1>
+    <h1>有东西出错了</h1>
     <Button type="primary" block onClick={() => window.location?.reload()}>
-      Refresh
+      刷新
     </Button>
   </div>
 );

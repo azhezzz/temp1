@@ -79,6 +79,7 @@ export default () => {
               openDetailInfoModal,
               openUpdateFirmwareModal,
             )}
+            scroll={{ x: true }}
             rowKey="id"
           />
         </ErrorBoundary>

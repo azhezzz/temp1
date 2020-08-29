@@ -1,33 +1,44 @@
 import React from 'react';
-import { RequestConfig, history, getDvaApp } from 'umi';
+import { RequestConfig, getDvaApp } from 'umi';
 import { ConfigProvider } from 'antd';
 import dotProp from 'dot-prop';
 import zhCN from 'antd/es/locale/zh_CN';
 
 import rightRender from '@/components/rightRender';
 import { StorageKey } from '@/constants';
+import { Context } from 'umi-request';
 
+const getErrMsg = (resData: any, ctx: Context) => {
+  const errMsg = resData?.detail
+    ? typeof resData?.detail == 'string'
+      ? resData?.detail
+      : JSON.stringify(resData?.detail)
+    : ctx.res.statusText || '未知错误';
+  return errMsg;
+};
 export const request: RequestConfig = {
-  prefix: '/api',
+  // @ts-ignore
+  prefix: BASE_URL,
   timeout: 15 * 1000,
   errorConfig: {
     adaptor: (resData, ctx) => {
-      // console.log(resData, ctx);
       if (ctx?.res?.status === 401) {
         // 认证失败
         const message = dotProp.has(ctx?.req, 'options.headers.Authorization')
           ? '请重新登陆'
           : '请先登录';
-        // globalThis?.localStorage?.clear();
-        // globalThis?.sessionStorage?.clear();
-        // history.push('/login');
 
+        // TODO: 测试用 待删除
         getDvaApp()?._store?.dispatch?.({
           type: `user/login`,
           payload: {
             values: { password: '123456', username: 'admin', remember: true },
           },
         });
+        // TODO: 返回登陆页
+        // globalThis?.localStorage?.clear();
+        // globalThis?.sessionStorage?.clear();
+        // history.push('/login');
         return {
           ...resData,
           success: true,
@@ -35,13 +46,11 @@ export const request: RequestConfig = {
           errorMessage: message,
         };
       }
+      const errMsg = getErrMsg(resData, ctx);
       return {
         ...resData,
         success: resData?.detail,
-        errorMessage:
-          typeof resData?.detail == 'string'
-            ? resData?.detail
-            : JSON.stringify(resData?.detail),
+        errorMessage: errMsg,
       };
     },
   },
@@ -66,9 +75,7 @@ export function getInitialState() {
   return { isLogin: true };
 }
 
-export const layout = {
-  rightRender: rightRender,
-};
+export const layout = { rightRender: rightRender };
 
 export function rootContainer(container: React.ReactNode) {
   return React.createElement(ConfigProvider, { locale: zhCN }, container);

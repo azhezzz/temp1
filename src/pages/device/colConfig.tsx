@@ -264,7 +264,7 @@ export const colDetailConfigs: {
       dataIndex: 'entrance',
       key: 'entrance',
       render: text =>
-        text ? <Tag color="green">关闭</Tag> : <Tag color="red">打开</Tag>,
+        text ? <Tag color="green">打开</Tag> : <Tag color="red">关闭</Tag>,
       sorter: (a, b) => a.entrance - b.entrance,
       isBase: true,
     },
@@ -273,7 +273,7 @@ export const colDetailConfigs: {
       dataIndex: 'exit',
       key: 'exit',
       render: text =>
-        text ? <Tag color="green">关闭</Tag> : <Tag color="red">打开</Tag>,
+        text ? <Tag color="green">打开</Tag> : <Tag color="red">关闭</Tag>,
       sorter: (a, b) => a.exit - b.exit,
       isBase: true,
     },

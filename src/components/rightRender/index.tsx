@@ -36,10 +36,10 @@ const RightRender = () => {
       <Dropdown overlay={menu} placement="bottomLeft" arrow>
         <Avatar
           style={{
-            marginRight: 10,
+            marginRight: 20,
             cursor: 'pointer',
-            color: '#f56a00',
-            backgroundColor: '#fde3cf',
+            color: 'white',
+            backgroundColor: '#55acee',
           }}
           size="large"
         >

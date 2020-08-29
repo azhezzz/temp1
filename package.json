@@ -28,7 +28,6 @@
     "dayjs": "^1.8.34",
     "dot-prop": "^5.2.0",
     "lint-staged": "^10.0.7",
-    "mockjs": "^1.1.0",
     "moment": "^2.22.2",
     "omit.js": "^2.0.2",
     "prettier": "^1.19.1",
@@ -40,6 +39,5 @@
     "yorkie": "^2.0.0"
   },
   "devDependencies": {
-    "@types/mockjs": "^1.0.3"
   }
 }

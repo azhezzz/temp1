@@ -3,6 +3,7 @@ import { useModel, useDispatch } from 'umi';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './styles.less';
+import logo from '@/asserts/logo.png';
 
 export default () => {
   const { refresh } = useModel('@@initialState');
@@ -29,6 +30,10 @@ export default () => {
         }}
         onFinish={onFinish}
       >
+        <div className={styles.title}>
+          <img src={logo} alt="" width={50} />
+          <span>YMFARM</span>
+        </div>
         <Form.Item
           name="username"
           rules={[{ required: true, message: '请输入用户名!' }]}
