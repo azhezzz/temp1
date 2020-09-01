@@ -5,6 +5,9 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './styles.less';
 import logo from '@/asserts/logo.png';
 
+// @ts-ignore
+const appName = APP_NAME;
+
 export default () => {
   const { refresh } = useModel('@@initialState');
   const dispatch = useDispatch();
@@ -32,7 +35,7 @@ export default () => {
       >
         <div className={styles.title}>
           <img src={logo} alt="" width={50} />
-          <span>YMFARM</span>
+          <span>{appName}</span>
         </div>
         <Form.Item
           name="username"

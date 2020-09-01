@@ -6,32 +6,20 @@ export default defineConfig({
     BASE_URL: process.env.NODE_ENV?.includes('prod')
       ? process.env.PROD_BASE_URL
       : process.env.DEV_BASE_URL,
+    APP_NAME: 'YMFarm',
   },
-  layout: {
-    name: 'YMFARM',
-    title: 'YMFARM',
-    logo: '/public/logo.png',
-    navTheme: 'light',
-    contentWidth: 'Fluid',
-    fixedHeader: true,
-    fixSiderbar: true,
-    pwa: false,
-    splitMenus: false,
-  },
+
   metas: [{ name: 'build_time', value: new Date() }],
-  nodeModulesTransform: {
-    type: 'none',
-  },
+  nodeModulesTransform: { type: 'none' },
   routes: [
     {
       path: '/login',
       component: '@/pages/login',
-      layout: false,
     },
     {
       path: '/NotFound',
       component: '@/pages/exception/notFound',
-      wrappers: ['@/wrappers/auth'],
+      wrappers: ['@/layouts', '@/wrappers/auth'],
     },
     {
       path: '/',
@@ -39,22 +27,14 @@ export default defineConfig({
     },
     {
       path: '/device',
-      name: '设备信息',
-      component: '@/wrappers',
+      component: '@/layouts',
       wrappers: ['@/wrappers/auth'],
+      access: 'isLogin',
       routes: [
-        {
-          path: '/device/panel',
-          name: '控制面板',
-          component: '@/pages/device',
-        },
-        { path: '/device/meter', name: '计量器', component: '@/pages/device' },
-        { path: '/device/reader', name: '识别器', component: '@/pages/device' },
-        {
-          path: '/device/doorsensor',
-          name: '门传感器',
-          component: '@/pages/device',
-        },
+        { path: '/device/panel', component: '@/pages/device' },
+        { path: '/device/meter', component: '@/pages/device' },
+        { path: '/device/reader', component: '@/pages/device' },
+        { path: '/device/doorsensor', component: '@/pages/device' },
         { path: '*', redirect: '/NotFound' },
       ],
     },

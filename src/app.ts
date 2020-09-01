@@ -4,7 +4,6 @@ import { ConfigProvider } from 'antd';
 import dotProp from 'dot-prop';
 import zhCN from 'antd/es/locale/zh_CN';
 
-import rightRender from '@/components/rightRender';
 import { StorageKey } from '@/constants';
 import { Context } from 'umi-request';
 
@@ -75,7 +74,7 @@ export function getInitialState() {
   return { isLogin: true };
 }
 
-export const layout = { rightRender: rightRender };
+// export const layout = { rightRender: rightRender };
 
 export function rootContainer(container: React.ReactNode) {
   return React.createElement(ConfigProvider, { locale: zhCN }, container);
